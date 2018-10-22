@@ -15,7 +15,7 @@ public class Rules {
             Rule.is('^'),
             FunctionRule.instance(),
             WhitespaceRule.instance(),
-            ValueRule.instance(),
+            VariableRule.instance(),
             ValueRule.instance(),
             LParenRule.instance()
     );

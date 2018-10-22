@@ -27,7 +27,6 @@ public class GrammarChecker {
                     continue;
                 }
             }
-
         }
         return result;
     }

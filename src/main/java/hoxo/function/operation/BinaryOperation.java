@@ -1,4 +1,6 @@
-package hoxo.function;
+package hoxo.function.operation;
+
+import hoxo.function.Function;
 
 public abstract class BinaryOperation implements Function {
     private final Function left;

@@ -1,10 +1,8 @@
 package hoxo.function;
 
-import hoxo.util.HasName;
-
 import static hoxo.function.Functions.*;
 
-public class Cos extends AbstractFunction implements HasName {
+public class Cos extends AbstractFunction {
     public Cos(Function arg) {
         super(arg);
     }
@@ -17,12 +15,6 @@ public class Cos extends AbstractFunction implements HasName {
     @Override
     public Function derivative() {
         return multiply(arg.derivative(), neg(sin(arg)));
-    }
-
-
-    @Override
-    public String getName() {
-        return "cos";
     }
 
     @Override

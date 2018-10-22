@@ -1,4 +1,6 @@
-package hoxo.function;
+package hoxo.function.operation;
+
+import hoxo.function.Function;
 
 public class Minus extends BinaryOperation {
     private Minus(Function left, Function right) {

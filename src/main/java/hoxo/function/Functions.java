@@ -1,5 +1,10 @@
 package hoxo.function;
 
+import hoxo.function.operation.Divide;
+import hoxo.function.operation.Minus;
+import hoxo.function.operation.Multiply;
+import hoxo.function.operation.Sum;
+
 public final class Functions {
     public static final Identity X = Identity.instance();
 

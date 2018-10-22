@@ -1,4 +1,7 @@
-package hoxo.function;
+package hoxo.function.operation;
+
+import hoxo.function.Constant;
+import hoxo.function.Function;
 
 import static hoxo.function.Functions.*;
 

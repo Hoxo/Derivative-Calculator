@@ -18,7 +18,7 @@ public class Lexeme {
         DIVIDE("\\/"),
         POWER("\\^"),
         VALUE("\\d*\\.?\\d+"),
-        SPACE("\\s"),
+        WHITESPACE("\\s"),
         UNKNOWN("")
         ;
 
@@ -43,7 +43,7 @@ public class Lexeme {
         DICT.put("/", new Lexeme(Type.DIVIDE, "/"));
         DICT.put("*", new Lexeme(Type.MULTIPLY, "*"));
         DICT.put("^", new Lexeme(Type.POWER, "^"));
-        DICT.put(" ", new Lexeme(Type.SPACE, " "));
+        DICT.put(" ", new Lexeme(Type.WHITESPACE, " "));
     }
 
     private final Type type;
