@@ -1,6 +1,7 @@
 package hoxo.function.operation;
 
 import com.google.common.collect.Lists;
+import hoxo.function.Constant;
 import hoxo.function.Function;
 
 import java.util.List;
@@ -13,6 +14,9 @@ public class MultiSum extends MultiOperation {
 
     public static Function cons(List<Function> args) {
         //TODO Add validation and simlplification
+        if (args.stream().allMatch(func -> func.equals(Constant.ZERO))) {
+            return Constant.ZERO;
+        }
         return new MultiSum(args);
     }
 
