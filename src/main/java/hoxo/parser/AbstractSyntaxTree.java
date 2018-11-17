@@ -2,25 +2,104 @@ package hoxo.parser;
 
 import com.google.common.collect.Lists;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class AbstractSyntaxTree {
 
     private Node root;
 
-    public static class Iterator {
+    public AbstractSyntaxTree() {}
+
+    public AbstractSyntaxTree(Node root) {
+        this.root = root;
+    }
+
+    public Iterator iterator() {
+        return new Iterator(root);
+    }
+
+    public class Iterator {
         private Node current;
 
-        public boolean hasParent() {
-            return current.hasParent();
+        private Iterator(Node current) {
+            this.current = current;
         }
 
-        public Intermediary parent() {
+        public boolean hasParent() {
+            return current != null && current.hasParent();
+        }
+
+        public Optional<Intermediary> getParent() {
             if (!hasParent()) {
-                return null;
+                return Optional.empty();
+            }
+            return Optional.of(current.getParent());
+        }
+
+        public Intermediary addParent(Intermediary par) {
+            if (root == null) {
+                setRoot(par);
+                return par;
+            }
+            if (hasParent()) {
+                par.setParent(current.getParent());
+            } else {
+                root = par;
+            }
+            current.setParent(par);
+            par.addChild(current);
+            current = par;
+            return par;
+        }
+
+        public Intermediary addParentWithPriority(Intermediary par) {
+            while (hasParent() &&
+                    current.getParent().getIntermediaryType().getPriority() > par.getIntermediaryType().getPriority()) {
+                current = current.getParent();
+            }
+            addParent(par);
+            return par;
+        }
+
+        public Optional<Intermediary> parent() {
+            if (!hasParent()) {
+                return Optional.empty();
             }
             current = current.getParent();
-            return ((Intermediary) current);
+            return Optional.of((Intermediary) current);
+        }
+
+        public Optional<Node> root() {
+            if (root == null) {
+                return Optional.empty();
+            } else {
+                current = root;
+                return Optional.of(current);
+            }
+        }
+
+        public Optional<Node> current() {
+            return Optional.ofNullable(current);
+        }
+
+        public <T extends Node> Optional<T> addChild(T node) {
+            if (current == null) {
+                setRoot(node);
+                return Optional.of(node);
+            }
+            if (current.isLeaf()) {
+                return Optional.empty();
+            }
+            ((Intermediary) current).addChild(node);
+            current = node;
+            return Optional.of(node);
+        }
+
+        private void setRoot(Node node) {
+            current = root = node;
         }
 
         public boolean hasChildren() {
@@ -29,33 +108,61 @@ public class AbstractSyntaxTree {
 
         public List<Node> getChildren() {
             if (!(current instanceof Intermediary)) {
-                return null;
+                return Collections.emptyList();
             } else {
                 return ((Intermediary) current).getChildren();
+            }
+        }
+
+        public <T extends Node> Optional<T> addSibling(T node) {
+            if (!hasParent()) {
+                return Optional.empty();
+            }
+            current.getParent().addChild(node);
+            current = node;
+            return Optional.of(node);
+        }
+
+        public Optional<Node> child(int i) {
+            if (current.isLeaf() || current.asIntermediary().getChildren().size() <= i || i < 0) {
+                return Optional.empty();
+            } else {
+                current = current.asIntermediary().getChildren().get(i);
+                return Optional.of(current);
             }
         }
     }
 
     private interface Type {}
 
-    private enum LeafType implements Type {
+    public enum LeafType implements Type {
         VALUE,
         VARIABLE,
         ;
     }
 
-    private enum NodeType implements Type {
-        MULTIPLY,
-        SUM,
-        MINUS,
-        DIVIDE,
-        POWER,
-        FUNCTION,
-        SCOPE,
+    public enum IntermediaryType implements Type {
+        MULTIPLY(1),
+        SUM(0),
+        MINUS(0),
+        DIVIDE(1),
+        POWER(1),
+        FUNCTION(2),
+        SCOPE(2),
         ;
+
+        private int priority;
+
+        IntermediaryType(int priority) {
+            this.priority = priority;
+        }
+
+        public int getPriority() {
+            return priority;
+        }
     }
 
-    private static abstract class Node {
+    public static abstract class Node {
         private boolean isLeaf;
         private Intermediary parent;
 
@@ -66,6 +173,14 @@ public class AbstractSyntaxTree {
 
         public Intermediary getParent() {
             return parent;
+        }
+
+        public Intermediary asIntermediary() {
+            return (Intermediary) this;
+        }
+
+        public Leaf asLeaf() {
+            return (Leaf) this;
         }
 
         public void setParent(Intermediary parent) {
@@ -85,14 +200,22 @@ public class AbstractSyntaxTree {
         private LeafType leafType;
         private String value;
 
-        public Leaf(String value, LeafType leafType) {
+        private Leaf(String value, LeafType leafType) {
             this(value, leafType, null);
         }
 
-        public Leaf(String value, LeafType leafType, Intermediary parent) {
+        private Leaf(String value, LeafType leafType, Intermediary parent) {
             super(true, parent);
             this.leafType = leafType;
             this.value = value;
+        }
+
+        public static Leaf variable(String variable) {
+            return new Leaf(variable, LeafType.VARIABLE);
+        }
+
+        public static Leaf value(String value) {
+            return new Leaf(value, LeafType.VALUE);
         }
 
         public LeafType getLeafType() {
@@ -102,24 +225,71 @@ public class AbstractSyntaxTree {
         public String getValue() {
             return value;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Leaf leaf = (Leaf) o;
+            return leafType == leaf.leafType &&
+                    Objects.equals(value, leaf.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(leafType, value);
+        }
     }
 
     public static class Intermediary extends Node {
-        private NodeType nodeType;
+        private IntermediaryType intermediaryType;
+        private String value;
         private List<Node> children;
 
-        public Intermediary(NodeType nodeType, Intermediary parent, Node... children) {
-            super(false, parent);
-            this.nodeType = nodeType;
+        private Intermediary(IntermediaryType type) {
+            super(false, null);
+            intermediaryType = type;
+            children = Lists.newArrayList();
+        }
+
+        private Intermediary(IntermediaryType intermediaryType, String value, Node... children) {
+            super(false, null);
+            this.intermediaryType = intermediaryType;
+            this.value = value;
             this.children = Lists.newArrayList(children);
         }
 
-        public NodeType getNodeType() {
-            return nodeType;
+        public static Intermediary sum(Node... children) {
+            return new Intermediary(IntermediaryType.SUM, "+", children);
         }
 
-        public void add(Node node) {
+        public static Intermediary multiply(Node... children) {
+            return new Intermediary(IntermediaryType.MULTIPLY, "*", children);
+        }
+
+        public static Intermediary divide(Node... children) {
+            return new Intermediary(IntermediaryType.DIVIDE, "/", children);
+        }
+
+        public static Intermediary power(Node... children) {
+            return new Intermediary(IntermediaryType.POWER, "^", children);
+        }
+
+        public static Intermediary function(String value, Node... children) {
+            return new Intermediary(IntermediaryType.FUNCTION, value, children);
+        }
+
+        public static Intermediary scope(Node... children) {
+            return new Intermediary(IntermediaryType.SCOPE, "()", children);
+        }
+
+        public IntermediaryType getIntermediaryType() {
+            return intermediaryType;
+        }
+
+        public void addChild(Node node) {
             children.add(node);
+            node.setParent(this);
         }
 
         public List<Node> getChildren() {
