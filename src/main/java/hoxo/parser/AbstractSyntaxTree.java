@@ -44,24 +44,31 @@ public class AbstractSyntaxTree {
                 setRoot(par);
                 return par;
             }
-            if (hasParent()) {
-                par.setParent(current.getParent());
-            } else {
-                root = par;
-            }
-            current.setParent(par);
-            par.addChild(current);
-            current = par;
+            setParentFor(current, par);
             return par;
         }
 
         public Intermediary addParentWithPriority(Intermediary par) {
-            while (hasParent() &&
-                    current.getParent().getIntermediaryType().getPriority() > par.getIntermediaryType().getPriority()) {
-                current = current.getParent();
+            Node tmp = current;
+            while (tmp.hasParent() &&
+                    tmp.getParent().getIntermediaryType().getPriority() >= par.getIntermediaryType().getPriority() &&
+                    tmp.getParent().getIntermediaryType().getPriority() != 2) {
+                tmp = tmp.getParent();
             }
-            addParent(par);
+            setParentFor(tmp, par);
             return par;
+        }
+
+        private void setParentFor(Node child, Intermediary parent) {
+            if (child.hasParent()) {
+                child.getParent().clearChildren();
+                child.getParent().addChild(parent);
+                parent.setParent(child.getParent());
+            } else {
+                root = parent;
+            }
+            child.setParent(parent);
+            parent.addChild(child);
         }
 
         public Optional<Intermediary> parent() {
@@ -94,7 +101,6 @@ public class AbstractSyntaxTree {
                 return Optional.empty();
             }
             ((Intermediary) current).addChild(node);
-            current = node;
             return Optional.of(node);
         }
 
@@ -119,7 +125,6 @@ public class AbstractSyntaxTree {
                 return Optional.empty();
             }
             current.getParent().addChild(node);
-            current = node;
             return Optional.of(node);
         }
 
@@ -163,11 +168,9 @@ public class AbstractSyntaxTree {
     }
 
     public static abstract class Node {
-        private boolean isLeaf;
         private Intermediary parent;
 
-        public Node(boolean isLeaf, Intermediary parent) {
-            this.isLeaf = isLeaf;
+        public Node(Intermediary parent) {
             this.parent = parent;
         }
 
@@ -191,9 +194,7 @@ public class AbstractSyntaxTree {
             return parent != null;
         }
 
-        public boolean isLeaf() {
-            return isLeaf;
-        }
+        public abstract boolean isLeaf();
     }
 
     public static class Leaf extends Node {
@@ -205,9 +206,14 @@ public class AbstractSyntaxTree {
         }
 
         private Leaf(String value, LeafType leafType, Intermediary parent) {
-            super(true, parent);
+            super(parent);
             this.leafType = leafType;
             this.value = value;
+        }
+
+        @Override
+        public boolean isLeaf() {
+            return true;
         }
 
         public static Leaf variable(String variable) {
@@ -247,13 +253,13 @@ public class AbstractSyntaxTree {
         private List<Node> children;
 
         private Intermediary(IntermediaryType type) {
-            super(false, null);
+            super( null);
             intermediaryType = type;
             children = Lists.newArrayList();
         }
 
         private Intermediary(IntermediaryType intermediaryType, String value, Node... children) {
-            super(false, null);
+            super(null);
             this.intermediaryType = intermediaryType;
             this.value = value;
             this.children = Lists.newArrayList(children);
@@ -292,8 +298,21 @@ public class AbstractSyntaxTree {
             node.setParent(this);
         }
 
+        @Override
+        public boolean isLeaf() {
+            return false;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
         public List<Node> getChildren() {
             return children;
+        }
+
+        public void clearChildren() {
+            children.clear();
         }
 
         public boolean hasChildren() {

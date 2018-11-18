@@ -41,12 +41,13 @@ public class AbstractSyntaxTreeTest {
         AbstractSyntaxTree.Leaf l1 = AbstractSyntaxTree.Leaf.variable("1");
         AbstractSyntaxTree.Leaf l2 = AbstractSyntaxTree.Leaf.variable("2");
         iterator.addChild(l1);
+        iterator.child(0);
         iterator.addSibling(l2);
         Assert.assertEquals(i, l1.getParent());
         Assert.assertEquals(i, l2.getParent());
 
         Assert.assertTrue(iterator.current().isPresent());
-        Assert.assertEquals(l2, iterator.current().get());
+        Assert.assertEquals(l1, iterator.current().get());
         Assert.assertTrue(iterator.hasParent());
         Assert.assertEquals(i, iterator.parent().get());
         Assert.assertEquals(Lists.newArrayList(l1, l2), iterator.current().get().asIntermediary().getChildren());
@@ -59,12 +60,40 @@ public class AbstractSyntaxTreeTest {
         AbstractSyntaxTree.Leaf value = AbstractSyntaxTree.Leaf.variable("123");
         iterator.addChild(value);
         iterator.addParent(mult);
-        iterator.child(0);
         iterator.addParentWithPriority(sum);
-        Assert.assertEquals(sum, iterator.current().get());
-        Assert.assertFalse(iterator.hasParent());
+        Assert.assertTrue(iterator.hasParent());
+        iterator.parent();
+        Assert.assertEquals(Lists.newArrayList(value), iterator.getChildren());
+        iterator.parent();
         Assert.assertEquals(Lists.newArrayList(mult), iterator.getChildren());
-        Assert.assertEquals(Lists.newArrayList(value), iterator.child(0).get().asIntermediary().getChildren());
+    }
+
+    @Test
+    public void addParentWithPriorityTest() {
+        AbstractSyntaxTree.Leaf leaf = AbstractSyntaxTree.Leaf.value("123");
+        AbstractSyntaxTree.Intermediary sum1 = AbstractSyntaxTree.Intermediary.sum();
+        AbstractSyntaxTree.Intermediary sum2 = AbstractSyntaxTree.Intermediary.sum();
+        AbstractSyntaxTree.Intermediary mult = AbstractSyntaxTree.Intermediary.multiply();
+        AbstractSyntaxTree.Intermediary scope = AbstractSyntaxTree.Intermediary.scope();
+        iterator.addChild(leaf);
+        iterator.addParentWithPriority(sum1);
+        iterator.addParentWithPriority(mult);
+        iterator.addParentWithPriority(scope);
+        iterator.addParentWithPriority(sum2);
+        Assert.assertEquals(leaf, iterator.current().get());
+        iterator.parent();
+        Assert.assertEquals(sum2, iterator.current().get());
+        Assert.assertEquals(Lists.newArrayList(leaf), iterator.getChildren());
+        iterator.parent();
+        Assert.assertEquals(scope, iterator.current().get());
+        Assert.assertEquals(Lists.newArrayList(sum2), iterator.getChildren());
+        iterator.parent();
+        Assert.assertEquals(mult, iterator.current().get());
+        Assert.assertEquals(Lists.newArrayList(scope), iterator.getChildren());
+        iterator.parent();
+        Assert.assertEquals(sum1, iterator.current().get());
+        Assert.assertEquals(Lists.newArrayList(mult), iterator.getChildren());
+
     }
 
 }
