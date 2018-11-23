@@ -3,6 +3,7 @@ package hoxo.parser.tree;
 import com.google.common.collect.Lists;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class OperationNode extends Intermediary {
@@ -37,6 +38,7 @@ public abstract class OperationNode extends Intermediary {
 
     public void setLeftChild(Node left) {
         this.left = Optional.ofNullable(left);
+        left.setParent(this);
     }
 
     public boolean hasRightChild() {
@@ -49,10 +51,22 @@ public abstract class OperationNode extends Intermediary {
 
     public void setRightChild(Node right) {
         this.right = Optional.ofNullable(right);
+        right.setParent(this);
     }
 
     @Override
     public String toString() {
         return String.format("%s %s %s", getLeftChild(), getValue(), getRightChild());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        OperationNode that = (OperationNode) o;
+        return Objects.equals(left, that.left) &&
+                Objects.equals(right, that.right);
+    }
+
 }

@@ -12,7 +12,7 @@ import static hoxo.parser.rule.Rules.BASIC_RULES;
 public class Main {
     public static void main(String[] args) {
         Lexer lexer = new Lexer(BASIC_RULES);
-        String input = "a + f(b * f(c / f(d - f(e ^ f)))) + g";
+        String input = "a+f(b*f(c/f(d-f(e^f))))+g";
         List<Lexeme> lexemeList = lexer.parse(input);
         Parser parser = new Parser();
         AbstractSyntaxTree ast = parser.parse(lexemeList);

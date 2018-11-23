@@ -2,6 +2,7 @@ package hoxo.parser.tree;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class AbstractSyntaxTree {
@@ -20,6 +21,14 @@ public class AbstractSyntaxTree {
 
     public Node getRoot() {
         return root;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AbstractSyntaxTree that = (AbstractSyntaxTree) o;
+        return Objects.equals(root, that.root);
     }
 
     public class Iterator {

@@ -1,5 +1,7 @@
 package hoxo.parser.tree;
 
+import java.util.Objects;
+
 public abstract class Node {
     private Intermediary parent;
     private String value;
@@ -37,4 +39,13 @@ public abstract class Node {
     public abstract NodeType getType();
 
     public abstract String toString();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return Objects.equals(value, node.value);
+    }
+
 }

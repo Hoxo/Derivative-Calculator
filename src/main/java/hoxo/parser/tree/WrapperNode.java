@@ -3,6 +3,7 @@ package hoxo.parser.tree;
 import com.google.common.collect.Lists;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class WrapperNode extends Intermediary {
@@ -29,5 +30,14 @@ public abstract class WrapperNode extends Intermediary {
 
     public void setChild(Node child) {
         this.child = Optional.ofNullable(child);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        WrapperNode that = (WrapperNode) o;
+        return Objects.equals(child, that.child);
     }
 }
