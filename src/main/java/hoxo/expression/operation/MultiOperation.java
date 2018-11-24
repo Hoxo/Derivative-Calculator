@@ -1,18 +1,18 @@
-package hoxo.function.operation;
+package hoxo.expression.operation;
 
-import hoxo.function.Function;
+import hoxo.expression.Expression;
 
 import java.util.List;
 import java.util.Objects;
 
-public abstract class MultiOperation implements Function {
-    private List<Function> args;
+public abstract class MultiOperation implements Expression {
+    private List<Expression> args;
 
-    public MultiOperation(List<Function> args) {
+    public MultiOperation(List<Expression> args) {
         this.args = args;
     }
 
-    public List<Function> getArgs() {
+    public List<Expression> getArgs() {
         return args;
     }
 

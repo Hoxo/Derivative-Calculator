@@ -1,13 +1,13 @@
-package hoxo.function;
+package hoxo.expression;
 
-public class Identity implements Function {
+public class Identity implements Expression {
 
     private static Identity INSTANCE;
 
     private Identity() {}
 
     @Override
-    public Function derivative() {
+    public Expression derivative() {
         return Constant.ONE;
     }
 

@@ -1,18 +1,18 @@
-package hoxo.function.operation;
+package hoxo.expression.operation;
 
-import hoxo.function.Function;
+import hoxo.expression.Expression;
 
 public class Minus extends BinaryOperation {
-    private Minus(Function left, Function right) {
+    private Minus(Expression left, Expression right) {
         super(left, right);
     }
 
     @Override
-    public Function derivative() {
+    public Expression derivative() {
         return cons(getLeft().derivative(), getRight().derivative());
     }
 
-    public static Function cons(Function left, Function right) {
+    public static Expression cons(Expression left, Expression right) {
         return new Minus(left, right);
     }
 

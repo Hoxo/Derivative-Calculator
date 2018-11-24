@@ -1,10 +1,12 @@
 package hoxo.parser.tree;
 
 import com.google.common.collect.Lists;
+import hoxo.parser.Lexeme;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 public class AbstractSyntaxTreeTest {

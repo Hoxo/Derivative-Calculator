@@ -1,9 +1,9 @@
-package hoxo.function;
+package hoxo.expression;
 
-import static hoxo.function.Functions.*;
+import static hoxo.expression.Functions.*;
 
 public class Cos extends AbstractFunction {
-    public Cos(Function arg) {
+    public Cos(Expression arg) {
         super(arg);
     }
 
@@ -13,7 +13,7 @@ public class Cos extends AbstractFunction {
     }
 
     @Override
-    public Function derivative() {
+    public Expression derivative() {
         return multiply(arg.derivative(), neg(sin(arg)));
     }
 

@@ -6,7 +6,7 @@ public enum IntermediaryType implements NodeType {
     MINUS(0, "-"),
     DIVIDE(1, "/"),
     POWER(1, "^"),
-    FUNCTION(2, "function"),
+    FUNCTION(2, "expression"),
     SCOPE(2, "()"),
     ;
 

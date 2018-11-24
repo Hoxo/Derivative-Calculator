@@ -1,12 +1,12 @@
-package hoxo.function;
+package hoxo.expression;
 
-import static hoxo.function.Functions.*;
+import static hoxo.expression.Functions.*;
 
 public class Exponent extends AbstractFunction {
 
     private final double base;
 
-    private Exponent(double base, Function arg) {
+    private Exponent(double base, Expression arg) {
         super(arg);
         this.base = base;
     }
@@ -16,7 +16,7 @@ public class Exponent extends AbstractFunction {
         return Math.pow(base, arg.evaluate(x));
     }
 
-    public static Exponent cons(double base, Function arg) {
+    public static Exponent cons(double base, Expression arg) {
         return new Exponent(base, arg);
     }
 
@@ -25,7 +25,7 @@ public class Exponent extends AbstractFunction {
     }
 
     @Override
-    public Function derivative() {
+    public Expression derivative() {
         return multiply(arg.derivative(), multiply(c(Math.log(base)), this));
     }
 

@@ -1,18 +1,18 @@
-package hoxo.function.operation;
+package hoxo.expression.operation;
 
 import com.google.common.collect.Lists;
-import hoxo.function.Constant;
-import hoxo.function.Function;
+import hoxo.expression.Constant;
+import hoxo.expression.Expression;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MultiSum extends MultiOperation {
-    private MultiSum(List<Function> args) {
+    private MultiSum(List<Expression> args) {
         super(args);
     }
 
-    public static Function cons(List<Function> args) {
+    public static Expression cons(List<Expression> args) {
         //TODO Add validation and simlplification
         if (args.stream().allMatch(func -> func.equals(Constant.ZERO))) {
             return Constant.ZERO;
@@ -20,13 +20,13 @@ public class MultiSum extends MultiOperation {
         return new MultiSum(args);
     }
 
-    public static Function cons(Function first, Function second, Function... rest) {
+    public static Expression cons(Expression first, Expression second, Expression... rest) {
         return cons(Lists.asList(first, second, rest));
     }
 
     @Override
-    public Function derivative() {
-        return new MultiSum(getArgs().stream().map(Function::derivative).collect(Collectors.toList()));
+    public Expression derivative() {
+        return new MultiSum(getArgs().stream().map(Expression::derivative).collect(Collectors.toList()));
     }
 
     @Override

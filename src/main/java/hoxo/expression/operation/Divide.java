@@ -1,24 +1,24 @@
-package hoxo.function.operation;
+package hoxo.expression.operation;
 
-import hoxo.function.Constant;
-import hoxo.function.Function;
+import hoxo.expression.Constant;
+import hoxo.expression.Expression;
 
-import static hoxo.function.Functions.*;
+import static hoxo.expression.Functions.*;
 
 public class Divide extends BinaryOperation {
 
-    private Divide(Function left, Function right) {
+    private Divide(Expression left, Expression right) {
         super(left, right);
     }
 
     @Override
-    public Function derivative() {
+    public Expression derivative() {
         return cons(
                 minus(multiply(getLeft().derivative(), getRight()), multiply(getLeft(), getRight().derivative())),
                 pow(getLeft(), 2));
     }
 
-    public static Function cons(Function up, Function down) {
+    public static Expression cons(Expression up, Expression down) {
         if (up.equals(Constant.ZERO))
             return up;
         if (down.equals(Constant.ZERO))

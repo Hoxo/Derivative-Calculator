@@ -1,21 +1,21 @@
-package hoxo.function.operation;
+package hoxo.expression.operation;
 
-import hoxo.function.Function;
+import hoxo.expression.Expression;
 
-public abstract class BinaryOperation implements Function {
-    private final Function left;
-    private final Function right;
+public abstract class BinaryOperation implements Expression {
+    private final Expression left;
+    private final Expression right;
 
-    public BinaryOperation(Function left, Function right) {
+    public BinaryOperation(Expression left, Expression right) {
         this.left = left;
         this.right = right;
     }
 
-    public Function getLeft() {
+    public Expression getLeft() {
         return left;
     }
 
-    public Function getRight() {
+    public Expression getRight() {
         return right;
     }
 

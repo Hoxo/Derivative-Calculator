@@ -1,18 +1,18 @@
-package hoxo.function.operation;
+package hoxo.expression.operation;
 
-import hoxo.function.Constant;
-import hoxo.function.Function;
+import hoxo.expression.Constant;
+import hoxo.expression.Expression;
 
-import static hoxo.function.Functions.*;
+import static hoxo.expression.Functions.*;
 
 public class Multiply extends BinaryOperation {
 
-    private Multiply(Function left, Function right) {
+    private Multiply(Expression left, Expression right) {
         super(left, right);
     }
 
     @Override
-    public Function derivative() {
+    public Expression derivative() {
         return sum(multiply(getLeft().derivative(), getRight()), multiply(getLeft(), getRight().derivative()));
     }
 
@@ -26,7 +26,7 @@ public class Multiply extends BinaryOperation {
         return getLeft().evaluate(x) * getRight().evaluate(x);
     }
 
-    public static Function cons(Function left, Function right) {
+    public static Expression cons(Expression left, Expression right) {
         if (Constant.ZERO.equals(left) || Constant.ZERO.equals(right)) {
             return Constant.ZERO;
         }

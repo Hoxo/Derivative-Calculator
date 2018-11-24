@@ -1,15 +1,15 @@
-package hoxo.function;
+package hoxo.expression;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import static hoxo.function.Functions.X;
+import static hoxo.expression.Functions.X;
 
 public class AbstractFunctionTest {
 
     @Test
     public void negativeFunctionTest() {
-        Function x = X;
+        Expression x = X;
         x = AbstractFunction.Negative.wrap(x);
         x = AbstractFunction.Negative.wrap(x);
         Assert.assertNotEquals(AbstractFunction.Negative.class, x.getClass());
@@ -18,9 +18,8 @@ public class AbstractFunctionTest {
 
     @Test
     public void negativeDerivativeTest() {
-        Function x = X;
-        Function mx = AbstractFunction.Negative.wrap(x);
-        Function der = mx.derivative();
+        Expression mx = AbstractFunction.Negative.wrap(X);
+        Expression der = mx.derivative();
         Assert.assertEquals("-1.0", der.toString());
     }
 }

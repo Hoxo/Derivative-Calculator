@@ -1,30 +1,30 @@
-package hoxo.function.operation;
+package hoxo.expression.operation;
 
 import com.google.common.collect.Lists;
-import hoxo.function.Function;
+import hoxo.expression.Expression;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MultiMultiply extends MultiOperation {
-    private MultiMultiply(List<Function> args) {
+    private MultiMultiply(List<Expression> args) {
         super(args);
     }
 
-    public static Function cons(List<Function> args) {
+    public static Expression cons(List<Expression> args) {
         return new MultiMultiply(args);
     }
 
-    public static Function cons(Function first, Function second, Function... rest) {
+    public static Expression cons(Expression first, Expression second, Expression... rest) {
         return cons(Lists.asList(first, second, rest));
     }
 
     @Override
-    public Function derivative() {
-        List<Function> sum = Lists.newArrayList();
-        for (Function function : getArgs()) {
-            Function deriv = function.derivative();
-            List<Function> withDeriv = getArgs().stream().filter(f -> !f.equals(function)).collect(Collectors.toList());
+    public Expression derivative() {
+        List<Expression> sum = Lists.newArrayList();
+        for (Expression expression : getArgs()) {
+            Expression deriv = expression.derivative();
+            List<Expression> withDeriv = getArgs().stream().filter(f -> !f.equals(expression)).collect(Collectors.toList());
             withDeriv.add(deriv);
             sum.add(MultiMultiply.cons(withDeriv));
         }

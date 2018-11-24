@@ -1,16 +1,16 @@
-package hoxo.function;
+package hoxo.expression;
 
-import static hoxo.function.Functions.cos;
-import static hoxo.function.Functions.multiply;
+import static hoxo.expression.Functions.cos;
+import static hoxo.expression.Functions.multiply;
 
 public class Sin extends AbstractFunction {
 
-    public Sin(Function arg) {
+    public Sin(Expression arg) {
         super(arg);
     }
 
     @Override
-    public Function derivative() {
+    public Expression derivative() {
         return multiply(arg.derivative(), cos(arg));
     }
 

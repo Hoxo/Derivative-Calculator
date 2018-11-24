@@ -19,7 +19,9 @@ public class Parser {
     private Deque<Lexeme> stack;
 
     public AbstractSyntaxTree parse(List<Lexeme> lexemes) {
-        lexemes = lexemes.stream().filter(lexeme -> !lexeme.getType().equals(WHITESPACE)).collect(Collectors.toList());
+        lexemes = lexemes.stream()
+                .filter(lexeme -> !lexeme.getType().equals(WHITESPACE))
+                .collect(Collectors.toList());
         iterator = lexemes.listIterator();
         ast = new AbstractSyntaxTree();
         astIterator = ast.iterator();
@@ -66,7 +68,7 @@ public class Parser {
             case LPAREN:
                 processLParen(next);
             case RPAREN:
-                throw new ParseException("Missed argument in function: " + lexeme.getValue());
+                throw new ParseException("Missed argument in expression: " + lexeme.getValue());
             default:
                 unexpected(next);
         }

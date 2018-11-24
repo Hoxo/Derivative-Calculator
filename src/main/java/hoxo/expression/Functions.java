@@ -1,42 +1,42 @@
-package hoxo.function;
+package hoxo.expression;
 
-import hoxo.function.operation.Divide;
-import hoxo.function.operation.Minus;
-import hoxo.function.operation.Multiply;
-import hoxo.function.operation.Sum;
+import hoxo.expression.operation.Divide;
+import hoxo.expression.operation.Minus;
+import hoxo.expression.operation.Multiply;
+import hoxo.expression.operation.Sum;
 
 public final class Functions {
     public static final Identity X = Identity.instance();
 
-    public static Function multiply(Function a, Function b) {
+    public static Expression multiply(Expression a, Expression b) {
         return Multiply.cons(a, b);
     }
 
-    public static Function sum(Function a, Function b) {
+    public static Expression sum(Expression a, Expression b) {
         return Sum.cons(a, b);
     }
 
-    public static Function divide(Function a, Function b) {
+    public static Expression divide(Expression a, Expression b) {
         return Divide.cons(a, b);
     }
 
-    public static Function minus(Function a, Function b) {
+    public static Expression minus(Expression a, Expression b) {
         return Minus.cons(a, b);
     }
 
-    public static Function neg(Function x) {
+    public static Expression neg(Expression x) {
         return AbstractFunction.Negative.wrap(x);
     }
 
-    public static Function pow(Function arg, double pow) {
+    public static Expression pow(Expression arg, double pow) {
         return Power.cons(arg, pow);
     }
 
-    public static Function sqr(Function arg) {
+    public static Expression sqr(Expression arg) {
         return Power.cons(arg, 2);
     }
 
-    public static Function exponent(double base, Function arg) {
+    public static Expression exponent(double base, Expression arg) {
         return Exponent.cons(base, arg);
     }
 
@@ -52,19 +52,19 @@ public final class Functions {
         return Log.LOG10_X;
     }
 
-    public static Function ln(Function arg) {
+    public static Expression ln(Expression arg) {
         return Log.cons(Math.E, arg);
     }
 
-    public static Function log(double base, Function arg) {
+    public static Expression log(double base, Expression arg) {
         return Log.cons(base, arg);
     }
 
-    public static Function log2(Function arg) {
+    public static Expression log2(Expression arg) {
         return Log.cons(2, arg);
     }
 
-    public static Function log10(Function arg) {
+    public static Expression log10(Expression arg) {
         return Log.cons(10, arg);
     }
 
@@ -72,7 +72,7 @@ public final class Functions {
         return new Sin(X);
     }
 
-    public static Function sin(Function arg) {
+    public static Expression sin(Expression arg) {
         return new Sin(arg);
     }
 
@@ -80,7 +80,7 @@ public final class Functions {
         return new Cos(X);
     }
 
-    public static Function cos(Function arg) {
+    public static Expression cos(Expression arg) {
         return new Cos(arg);
     }
 

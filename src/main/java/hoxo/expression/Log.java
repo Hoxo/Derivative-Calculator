@@ -1,6 +1,6 @@
-package hoxo.function;
+package hoxo.expression;
 
-import static hoxo.function.Functions.*;
+import static hoxo.expression.Functions.*;
 
 public class Log extends AbstractFunction {
     public static final Log LN_X = new Log(Math.E, Functions.X);
@@ -9,12 +9,12 @@ public class Log extends AbstractFunction {
 
     private final double base;
 
-    private Log(double base, Function arg) {
+    private Log(double base, Expression arg) {
         super(arg);
         this.base = base;
     }
 
-    public static Function cons(double base, Function arg) {
+    public static Expression cons(double base, Expression arg) {
         if (base <= 0) {
             throw new ArithmeticException("Logarithm base is less or equals zero");
         }
@@ -42,7 +42,7 @@ public class Log extends AbstractFunction {
     }
 
     @Override
-    public Function derivative() {
+    public Expression derivative() {
         return divide(arg.derivative(), multiply(c(Math.log(base)), arg));
     }
 

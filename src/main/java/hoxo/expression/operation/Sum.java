@@ -1,17 +1,17 @@
-package hoxo.function.operation;
+package hoxo.expression.operation;
 
-import hoxo.function.Constant;
-import hoxo.function.Function;
+import hoxo.expression.Constant;
+import hoxo.expression.Expression;
 
-import static hoxo.function.Functions.*;
+import static hoxo.expression.Functions.*;
 
 public class Sum extends BinaryOperation {
-    private Sum(Function left, Function right) {
+    private Sum(Expression left, Expression right) {
         super(left, right);
     }
 
     @Override
-    public Function derivative() {
+    public Expression derivative() {
         return sum(getLeft().derivative(), getRight().derivative());
     }
 
@@ -20,7 +20,7 @@ public class Sum extends BinaryOperation {
         return getLeft().evaluate(x) + getRight().evaluate(x);
     }
 
-    public static Function cons(Function left, Function right) {
+    public static Expression cons(Expression left, Expression right) {
         if (left instanceof Constant && right instanceof Constant) {
             return c(((Constant) left).getValue() + ((Constant) right).getValue());
         }

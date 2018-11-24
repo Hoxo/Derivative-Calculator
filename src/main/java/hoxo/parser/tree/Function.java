@@ -13,6 +13,11 @@ public class Function extends WrapperNode {
     }
 
     @Override
+    public <T> T visit(ASTVisitor<T> visitor) {
+        return visitor.visitFunction(this);
+    }
+
+    @Override
     public String toString() {
         return getValue() + "(" + getChild() + ")";
     }

@@ -9,6 +9,11 @@ public class Minus extends OperationNode {
     }
 
     @Override
+    public <T> T visit(ASTVisitor<T> visitor) {
+        return visitor.visitMinus(this);
+    }
+
+    @Override
     public IntermediaryType getType() {
         return MINUS;
     }

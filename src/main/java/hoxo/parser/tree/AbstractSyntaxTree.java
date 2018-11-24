@@ -31,6 +31,13 @@ public class AbstractSyntaxTree {
         return Objects.equals(root, that.root);
     }
 
+    @Override
+    public String toString() {
+        return "AbstractSyntaxTree{" +
+                "root=" + root +
+                '}';
+    }
+
     public class Iterator {
         private Node current;
 
@@ -65,17 +72,22 @@ public class AbstractSyntaxTree {
                     tmp.getParent().getType().getPriority() != 2) {
                 tmp = tmp.getParent();
             }
-            //TODO Get rid of it
             if (tmp.hasParent()) {
-                setFirstChildFor(tmp.getParent(), par);
-                par.setParent(tmp.getParent());
+                Intermediary tmpParent = tmp.getParent();
+                if (tmpParent instanceof OperationNode) {
+                    if (tmp == ((OperationNode) tmpParent).getLeftChild()) {
+                        setFirstChildFor(tmpParent, par);
+                    } else {
+                        setLastChildFor(tmpParent, par);
+                    }
+                } else if (tmpParent instanceof WrapperNode) {
+                    setFirstChildFor(tmpParent, par);
+                }
             } else {
                 root = par;
             }
-            tmp.setParent(par);
             setFirstChildFor(par, tmp);
             current = par;
-//            setParentFor(tmp, par);
             return par;
         }
 
@@ -210,17 +222,25 @@ public class AbstractSyntaxTree {
             }
         }
 
-        public Optional<Node> child(int i) {
-            if (current.isLeaf() || current.asIntermediary().getChildren().size() <= i || i < 0) {
-                return Optional.empty();
-            } else {
-                current = current.asIntermediary().getChildren().get(i);
-                return Optional.of(current);
-            }
-        }
-
         public Optional<Node> lastChild() {
-            return child(getChildren().size() - 1);
+            if (isCurrentIntermediary()) {
+                if (isCurrentOperation()) {
+                    OperationNode op = ((OperationNode) current);
+                    if (op.hasRightChild()) {
+                        current = op.getRightChild();
+                    } else if (op.hasLeftChild()) {
+                        current = op.getLeftChild();
+                    } else {
+                        return Optional.empty();
+                    }
+                    return Optional.of(current);
+                }
+                if (isCurrentWrapper()) {
+                    current = ((WrapperNode) current).getChild();
+                    return Optional.of(current);
+                }
+            }
+            return Optional.empty();
         }
     }
 

@@ -34,6 +34,8 @@ public abstract class Node {
         return value;
     }
 
+    public abstract <T> T visit(ASTVisitor<T> visitor);
+
     public abstract boolean isLeaf();
 
     public abstract NodeType getType();

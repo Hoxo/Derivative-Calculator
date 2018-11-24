@@ -1,26 +1,26 @@
-package hoxo.function;
+package hoxo.expression;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import static hoxo.function.Functions.*;
+import static hoxo.expression.Functions.*;
 
 public class DerivativeTest {
 
     @Test
     public void constantDerivativeTest() {
-        Function constant = c(1);
+        Expression constant = c(1);
         Assert.assertEquals(Constant.ZERO, constant.derivative());
     }
 
     @Test
     public void functionWithConstantValueDerivativeTest() {
         Constant c = c(1);
-        Function cos = cos(c);
-        Function sin = sin(c);
-        Function log = log(42, c);
-        Function pow = pow(c, 2);
-        Function exp = exponent(1234, c);
+        Expression cos = cos(c);
+        Expression sin = sin(c);
+        Expression log = log(42, c);
+        Expression pow = pow(c, 2);
+        Expression exp = exponent(1234, c);
 
         Assert.assertEquals(Constant.ZERO, cos.derivative());
         Assert.assertEquals(Constant.ZERO, neg(cos).derivative());

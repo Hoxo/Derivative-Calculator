@@ -1,8 +1,8 @@
-package hoxo.function;
+package hoxo.expression;
 
 import java.util.Objects;
 
-public class Constant implements Function {
+public class Constant implements Expression {
     private final double value;
 
     public static final Constant ZERO = new Constant(0);
@@ -22,7 +22,7 @@ public class Constant implements Function {
     }
 
     @Override
-    public Function derivative() {
+    public Expression derivative() {
         return cons(0);
     }
 

@@ -1,16 +1,16 @@
-package hoxo.function;
+package hoxo.expression;
 
-import static hoxo.function.Functions.*;
+import static hoxo.expression.Functions.*;
 
 public class Power extends AbstractFunction {
     private final double power;
 
-    private Power(Function arg, double power) {
+    private Power(Expression arg, double power) {
         super(arg);
         this.power = power;
     }
 
-    public static Function cons(Function arg, double power) {
+    public static Expression cons(Expression arg, double power) {
         if (arg.equals(Constant.ZERO))
             return arg;
         if (power == 1)
@@ -26,7 +26,7 @@ public class Power extends AbstractFunction {
     }
 
     @Override
-    public Function derivative() {
+    public Expression derivative() {
         return multiply(multiply(c(power), arg.derivative()), pow(arg, power - 1));
     }
 

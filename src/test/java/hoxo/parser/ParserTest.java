@@ -71,14 +71,16 @@ public class ParserTest {
                 Lexeme.variable(a),
                 Lexeme.rparen()
         );
-        Variable va = Nodes.variable(a);
+        Variable va1 = Nodes.variable(a);
+        Variable va2 = Nodes.variable(a);
+        Variable va3 = Nodes.variable(a);
         Multiply multiply = Nodes.multiply();
         Plus plus = Nodes.plus();
-        plus.setRightChild(va);
-        plus.setLeftChild(va);
+        plus.setRightChild(va2);
+        plus.setLeftChild(va3);
         Scope scope = Nodes.scope();
         scope.setChild(plus);
-        multiply.setLeftChild(va);
+        multiply.setLeftChild(va1);
         multiply.setRightChild(scope);
         Assert.assertEquals(new AbstractSyntaxTree(multiply), parser.parse(lexemes));
     }
@@ -109,5 +111,34 @@ public class ParserTest {
         plus2.setLeftChild(va);
         f2a.setChild(plus2);
         Assert.assertEquals(new AbstractSyntaxTree(f1a), parser.parse(lexemes));
+    }
+
+    @Test
+    public void diffirentPriorityOperationsTest() {
+        String a = "a";
+        String b = "b";
+        Leaf a1 = Nodes.variable(a);
+        Leaf a2 = Nodes.variable(a);
+        Leaf b1 = Nodes.variable(b);
+        Leaf b2 = Nodes.variable(b);
+        Multiply m1 = Nodes.multiply();
+        m1.setLeftChild(a1);
+        m1.setRightChild(a2);
+        Multiply m2 = Nodes.multiply();
+        m2.setLeftChild(b1);
+        m2.setRightChild(b2);
+        Plus p = Nodes.plus();
+        p.setLeftChild(m1);
+        p.setRightChild(m2);
+        List<Lexeme> lexemes = Lists.newArrayList(
+                Lexeme.variable(a),
+                Lexeme.multiply(),
+                Lexeme.variable(a),
+                Lexeme.plus(),
+                Lexeme.variable(b),
+                Lexeme.multiply(),
+                Lexeme.variable(b)
+        );
+        Assert.assertEquals(new AbstractSyntaxTree(p), parser.parse(lexemes));
     }
 }
