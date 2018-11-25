@@ -14,8 +14,21 @@ public class Divide extends BinaryOperation {
     @Override
     public Expression derivative() {
         return cons(
-                minus(multiply(getLeft().derivative(), getRight()), multiply(getLeft(), getRight().derivative())),
-                pow(getLeft(), 2));
+                minus(
+                        multiply(
+                                getLeft().derivative(),
+                                getRight()
+                        ),
+                        multiply(
+                                getLeft(),
+                                getRight().derivative()
+                        )
+                ),
+                pow(
+                        getRight(),
+                        c(2)
+                )
+        );
     }
 
     public static Expression cons(Expression up, Expression down) {
@@ -39,11 +52,11 @@ public class Divide extends BinaryOperation {
 
     @Override
     public double evaluate(double x) {
-        return 0;
+        return getLeft().evaluate(x) / getRight().evaluate(x);
     }
 
     @Override
     public String toString() {
-        return "(" +  getLeft() + ") / (" + getRight() + ")";
+        return "(" + getLeft() + " / " + getRight() + ")";
     }
 }

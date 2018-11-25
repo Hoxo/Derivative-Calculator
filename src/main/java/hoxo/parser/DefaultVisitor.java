@@ -34,8 +34,7 @@ public class DefaultVisitor implements ASTVisitor<Expression> {
 
     @Override
     public Expression visitPower(Power power) {
-        //TODO Implement
-        return null;
+        return Functions.pow(power.getLeftChild().visit(this), power.getRightChild().visit(this));
     }
 
     @Override

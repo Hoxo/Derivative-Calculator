@@ -36,7 +36,7 @@ public class BinaryOperatorTest {
     @Test
     public void multiplyEqualsTest() {
         Expression f = function();
-        Assert.assertEquals(pow(f, 2), multiply(f, f));
+        Assert.assertEquals(pow(f, c(2)), multiply(f, f));
     }
 
     @Test
@@ -68,6 +68,6 @@ public class BinaryOperatorTest {
     }
 
     private static Expression function() {
-        return sin(cos(ln(pow(X, 2))));
+        return sin(cos(ln(pow(X, c(2)))));
     }
 }

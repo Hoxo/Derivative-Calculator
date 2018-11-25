@@ -1,12 +1,27 @@
 package hoxo.expression;
 
-import hoxo.expression.operation.Divide;
-import hoxo.expression.operation.Minus;
-import hoxo.expression.operation.Multiply;
-import hoxo.expression.operation.Sum;
+import hoxo.expression.operation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public final class Functions {
     public static final Identity X = Identity.instance();
+    static final Map<String, Function<Expression, Expression>> FUNCTIONS = new HashMap<>();
+
+    static {
+        FUNCTIONS.put("sin", Functions::sin);
+        FUNCTIONS.put("cos", Functions::cos);
+        FUNCTIONS.put("log10", Functions::log10);
+        FUNCTIONS.put("log2", Functions::log2);
+        FUNCTIONS.put("ln", Functions::ln);
+        FUNCTIONS.put("exp", Functions::exp);
+    }
+
+    public static Map<String, Function<Expression, Expression>> functions() {
+        return FUNCTIONS;
+    }
 
     public static Expression multiply(Expression a, Expression b) {
         return Multiply.cons(a, b);
@@ -28,28 +43,16 @@ public final class Functions {
         return AbstractFunction.Negative.wrap(x);
     }
 
-    public static Expression pow(Expression arg, double pow) {
+    public static Expression pow(Expression arg, Expression pow) {
         return Power.cons(arg, pow);
     }
 
     public static Expression sqr(Expression arg) {
-        return Power.cons(arg, 2);
+        return Power.cons(arg, c(2));
     }
 
-    public static Expression exponent(double base, Expression arg) {
-        return Exponent.cons(base, arg);
-    }
-
-    public static Log lnX() {
-        return Log.LN_X;
-    }
-
-    public static Log log2X() {
-        return Log.LOG2_X;
-    }
-
-    public static Log log10X() {
-        return Log.LOG10_X;
+    public static Expression exp(Expression arg) {
+        return Power.cons(Constant.E, arg);
     }
 
     public static Expression ln(Expression arg) {
@@ -68,16 +71,8 @@ public final class Functions {
         return Log.cons(10, arg);
     }
 
-    public static Sin sinX() {
-        return new Sin(X);
-    }
-
     public static Expression sin(Expression arg) {
         return new Sin(arg);
-    }
-
-    public static Cos cosX() {
-        return new Cos(X);
     }
 
     public static Expression cos(Expression arg) {

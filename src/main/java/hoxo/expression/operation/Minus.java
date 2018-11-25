@@ -25,4 +25,8 @@ public class Minus extends BinaryOperation {
     public double evaluate(double x) {
         return getLeft().evaluate(x) - getRight().evaluate(x);
     }
+
+    public String toString() {
+        return "(" + getLeft() + " - " + getRight() + ")";
+    }
 }

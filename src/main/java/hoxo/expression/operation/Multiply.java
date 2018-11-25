@@ -38,13 +38,13 @@ public class Multiply extends BinaryOperation {
             }
         }
         if (left.equals(right)) {
-            return pow(left, 2);
+            return pow(left, c(2));
         }
         return new Multiply(left, right);
     }
 
     @Override
     public String toString() {
-        return "(" + getLeft() + ") * (" + getRight() + ")";
+        return "(" + getLeft() + " * " + getRight() + ")";
     }
 }

@@ -19,8 +19,8 @@ public class DerivativeTest {
         Expression cos = cos(c);
         Expression sin = sin(c);
         Expression log = log(42, c);
-        Expression pow = pow(c, 2);
-        Expression exp = exponent(1234, c);
+        Expression pow = pow(c, c(2));
+        Expression exp = exp(c);
 
         Assert.assertEquals(Constant.ZERO, cos.derivative());
         Assert.assertEquals(Constant.ZERO, neg(cos).derivative());

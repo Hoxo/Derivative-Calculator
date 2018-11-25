@@ -7,6 +7,8 @@ public class Constant implements Expression {
 
     public static final Constant ZERO = new Constant(0);
     public static final Constant ONE = new Constant(1);
+    public static final Constant E = new Constant(Math.E);
+    public static final Constant PI = new Constant(Math.PI);
 
     private Constant(double value) {
         this.value = value;
@@ -34,6 +36,14 @@ public class Constant implements Expression {
             return ONE;
         }
         return new Constant(value);
+    }
+
+    public Constant inc() {
+        return cons(value + 1);
+    }
+
+    public Constant dec() {
+        return cons(value - 1);
     }
 
     public Constant abs() {
