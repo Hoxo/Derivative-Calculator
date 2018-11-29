@@ -54,6 +54,10 @@ public abstract class OperationNode extends Intermediary {
         right.setParent(this);
     }
 
+    public abstract boolean hasLeftAssociativity();
+    public abstract boolean hasRightAssociativity();
+
+
     @Override
     public String toString() {
         return String.format("%s %s %s", getLeftChild(), getValue(), getRightChild());

@@ -12,6 +12,16 @@ public class Plus extends OperationNode {
     }
 
     @Override
+    public boolean hasLeftAssociativity() {
+        return true;
+    }
+
+    @Override
+    public boolean hasRightAssociativity() {
+        return true;
+    }
+
+    @Override
     public <T> T visit(ASTVisitor<T> visitor) {
         return visitor.visitPlus(this);
     }

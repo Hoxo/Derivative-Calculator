@@ -140,6 +140,12 @@ public class IntegrationTest {
         Assert.assertEquals(Math.pow(2, Math.pow(2, 3)), expression.evaluate(123), DELTA);
     }
 
+    @Test
+    public void doubleMinusTest() {
+        Expression expression = parse("2 ^ 2 - -1");
+        Assert.assertEquals(5, expression.evaluate(1), DELTA);
+    }
+
     private Expression parse(String input) {
         List<Lexeme> lexemes = lexer.parse(input);
         List<String> errors = grammarChecker.check(lexemes);

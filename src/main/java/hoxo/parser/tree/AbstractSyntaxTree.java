@@ -76,8 +76,12 @@ public class AbstractSyntaxTree {
             }
             Node tmp = current;
             while (tmp.hasParent() &&
-                    tmp.getParent().getPriority() >= par.getPriority() &&
-                    !(tmp.getParent() instanceof WrapperNode)) {
+                    tmp.getParent().getPriority() > par.getPriority() &&
+                    tmp.getParent() instanceof OperationNode) {
+                tmp = tmp.getParent();
+            }
+            while(tmp.hasParent() && tmp.getParent().getPriority() == par.getPriority() &&
+                    par instanceof OperationNode && ((OperationNode) par).hasLeftAssociativity()) {
                 tmp = tmp.getParent();
             }
             if (tmp.hasParent()) {

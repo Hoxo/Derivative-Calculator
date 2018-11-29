@@ -1,29 +1,55 @@
 package hoxo;
 
-import hoxo.expression.AbstractFunction;
 import hoxo.expression.Expression;
 import hoxo.expression.Functions;
-import hoxo.parser.DefaultVisitor;
+import hoxo.parser.*;
 import hoxo.parser.tree.AbstractSyntaxTree;
-import hoxo.parser.Lexeme;
-import hoxo.parser.Lexer;
-import hoxo.parser.Parser;
 
-import java.util.HashMap;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 
 import static hoxo.parser.rule.Rules.BASIC_RULES;
 
 public class Main {
-    public static void main(String[] args) {
-        Lexer lexer = new Lexer(BASIC_RULES);
-        String input = "a+f(b*f(c/f(d-f(e^f))))+g";
-        List<Lexeme> lexemeList = lexer.parse(input);
-        Parser parser = new Parser();
-        AbstractSyntaxTree ast = parser.parse(lexemeList);
-        System.out.println(input);
-        System.out.println(ast.getRoot());
+    private Lexer lexer;
+    private GrammarChecker grammarChecker;
+    private Parser parser;
+    private DefaultVisitor visitor;
+
+    public Main() {
+        lexer = new Lexer(BASIC_RULES);
+        grammarChecker = new GrammarChecker(Functions.functions().keySet());
+        parser = new Parser();
+        visitor = new DefaultVisitor(Functions.functions());
+    }
+
+    public static void main(String[] args) throws Exception {
+        new Main().run();
+    }
+
+    public void run() throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String a;
+        while (!(a = reader.readLine()).equals("q")) {
+            try {
+                Expression expression = parse(a);
+                System.out.println(expression.evaluate(1));
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+        }
+    }
+
+    private Expression parse(String input) {
+        List<Lexeme> lexemes = lexer.parse(input);
+        List<String> errors = grammarChecker.check(lexemes);
+        if (!errors.isEmpty()) {
+            for (String error : errors) {
+                System.err.println(error);
+            }
+        }
+        AbstractSyntaxTree ast = parser.parse(lexemes);
+        return ast.convert(visitor);
     }
 }

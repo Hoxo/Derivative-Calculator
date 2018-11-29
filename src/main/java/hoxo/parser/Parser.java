@@ -133,7 +133,7 @@ public class Parser {
 
     private void processUnaryMinus(Lexeme lexeme) {
         hasNextOrThrow(iterator);
-        astIterator.addParentWithPriority(Nodes.unaryMinus());
+        astIterator.setChild(Nodes.unaryMinus());
         processWithConstraints(iterator.next(), AFTER_OPERATOR);
     }
 

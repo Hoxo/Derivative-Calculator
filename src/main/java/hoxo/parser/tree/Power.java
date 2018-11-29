@@ -11,6 +11,16 @@ public class Power extends OperationNode {
     }
 
     @Override
+    public boolean hasLeftAssociativity() {
+        return false;
+    }
+
+    @Override
+    public boolean hasRightAssociativity() {
+        return true;
+    }
+
+    @Override
     public <T> T visit(ASTVisitor<T> visitor) {
         return visitor.visitPower(this);
     }

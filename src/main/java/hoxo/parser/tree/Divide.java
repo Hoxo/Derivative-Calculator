@@ -11,6 +11,16 @@ public class Divide extends OperationNode {
     }
 
     @Override
+    public boolean hasLeftAssociativity() {
+        return true;
+    }
+
+    @Override
+    public boolean hasRightAssociativity() {
+        return false;
+    }
+
+    @Override
     public <T> T visit(ASTVisitor<T> visitor) {
         return visitor.visitDivide(this);
     }
