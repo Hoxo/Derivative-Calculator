@@ -6,12 +6,12 @@ public class Power extends OperationNode {
     }
 
     @Override
-    public <T> T visit(ASTVisitor<T> visitor) {
-        return visitor.visitPower(this);
+    public int getPriority() {
+        return 2;
     }
 
     @Override
-    public IntermediaryType getType() {
-        return IntermediaryType.POWER;
+    public <T> T visit(ASTVisitor<T> visitor) {
+        return visitor.visitPower(this);
     }
 }

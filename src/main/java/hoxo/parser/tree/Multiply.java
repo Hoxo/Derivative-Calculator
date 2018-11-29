@@ -6,12 +6,12 @@ public class Multiply extends OperationNode {
     }
 
     @Override
-    public <T> T visit(ASTVisitor<T> visitor) {
-        return visitor.visitMultiply(this);
+    public int getPriority() {
+        return 1;
     }
 
     @Override
-    public IntermediaryType getType() {
-        return IntermediaryType.MULTIPLY;
+    public <T> T visit(ASTVisitor<T> visitor) {
+        return visitor.visitMultiply(this);
     }
 }

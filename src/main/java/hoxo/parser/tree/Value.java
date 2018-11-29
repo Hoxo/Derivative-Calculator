@@ -9,9 +9,4 @@ public class Value extends Leaf {
     public <T> T visit(ASTVisitor<T> visitor) {
         return visitor.visitValue(this);
     }
-
-    @Override
-    public LeafType getType() {
-        return LeafType.VALUE;
-    }
 }

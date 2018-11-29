@@ -15,6 +15,11 @@ public abstract class WrapperNode extends Intermediary {
     }
 
     @Override
+    public int getPriority() {
+        return 10;
+    }
+
+    @Override
     public List<Node> getChildren() {
         return child.<List<Node>>map(Lists::newArrayList).orElseGet(Lists::newArrayList);
     }

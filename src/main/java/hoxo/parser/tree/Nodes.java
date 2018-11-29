@@ -38,4 +38,8 @@ public class Nodes {
         return new Value(value);
     }
 
+    public static UnaryMinus unaryMinus() {
+        return new UnaryMinus();
+    }
+
 }

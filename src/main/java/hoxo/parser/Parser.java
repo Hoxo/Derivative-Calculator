@@ -38,6 +38,9 @@ public class Parser {
             case VARIABLE:
                 processVariable(next);
                 break;
+            case MINUS:
+                processUnaryMinus(next);
+                break;
             case LPAREN:
                 processLParen(next);
                 break;
@@ -67,6 +70,10 @@ public class Parser {
                 break;
             case LPAREN:
                 processLParen(next);
+                break;
+            case MINUS:
+                processUnaryMinus(next);
+                break;
             case RPAREN:
                 throw new ParseException("Missed argument in expression: " + lexeme.getValue());
             default:
@@ -88,6 +95,9 @@ public class Parser {
                 break;
             case FUNCTION_START:
                 processFunction(next);
+                break;
+            case MINUS:
+                processUnaryMinus(next);
                 break;
             default:
                 unexpected(lexeme);
@@ -121,10 +131,23 @@ public class Parser {
         }
     }
 
+    private void processUnaryMinus(Lexeme lexeme) {
+        hasNextOrThrow(iterator);
+        astIterator.addParentWithPriority(Nodes.unaryMinus());
+        processWithConstraints(iterator.next(), AFTER_OPERATOR);
+    }
+
     private void processOperator(Lexeme lexeme) {
         hasNextOrThrow(iterator);
         astIterator.addParentWithPriority(getNodeForOperator(lexeme.getType()));
-        processWithConstraints(iterator.next(), AFTER_OPERATOR);
+        Lexeme next = iterator.next();
+        switch (next.getType()) {
+            case MINUS:
+                processUnaryMinus(next);
+                break;
+            default:
+                processWithConstraints(next, AFTER_OPERATOR);
+        }
     }
 
     private void processValue(Lexeme lexeme) {
@@ -146,10 +169,10 @@ public class Parser {
             astIterator.parent();
             switch (head.getType()) {
                 case LPAREN:
-                    moveUpUntilTypeNotEquals(IntermediaryType.SCOPE);
+                    moveUpUntilTypeNotEquals(Scope.class);
                     break;
                 case FUNCTION_START:
-                    moveUpUntilTypeNotEquals(IntermediaryType.FUNCTION);
+                    moveUpUntilTypeNotEquals(Function.class);
                     break;
                 default:
                     throw new ParseException("Unknown lexeme in stack");
@@ -162,12 +185,12 @@ public class Parser {
         processWithConstraints(iterator.next(), AFTER_OPERAND);
     }
 
-    private void moveUpUntilTypeNotEquals(IntermediaryType type) {
+    private void moveUpUntilTypeNotEquals(Class<? extends WrapperNode> type) {
         while(astIterator.hasParent() && (astIterator.isCurrentLeaf() || astIterator.isCurrentIntermediary() &&
                 !astIterator
                         .current()
                         .get()
-                        .getType()
+                        .getClass()
                         .equals(type))) {
             astIterator.parent();
         }

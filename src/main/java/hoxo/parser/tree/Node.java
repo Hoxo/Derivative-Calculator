@@ -38,8 +38,6 @@ public abstract class Node {
 
     public abstract boolean isLeaf();
 
-    public abstract NodeType getType();
-
     public abstract String toString();
 
     @Override

@@ -7,13 +7,12 @@ public class Plus extends OperationNode {
     }
 
     @Override
-    public <T> T visit(ASTVisitor<T> visitor) {
-        return visitor.visitPlus(this);
+    public int getPriority() {
+        return 0;
     }
 
     @Override
-    public IntermediaryType getType() {
-        return IntermediaryType.SUM;
+    public <T> T visit(ASTVisitor<T> visitor) {
+        return visitor.visitPlus(this);
     }
-
 }

@@ -29,36 +29,31 @@ public class IntegrationTest {
 
     @Test
     public void simpleSumTest() {
-        String input = "1 + 1";
-        Expression expression = parse(input);
+        Expression expression = parse("1 + 1");
         Assert.assertEquals(2, expression.evaluate(123), 0);
     }
 
     @Test
     public void associativityTest() {
-        String input = "2 + 2 * 2";
-        Expression expression = parse(input);
+        Expression expression = parse("2 + 2 * 2");
         Assert.assertEquals(6, expression.evaluate(123), 0);
     }
 
     @Test
     public void distributivityTest() {
-        String input = "(2 + 2) * 2";
-        Expression expression = parse(input);
+        Expression expression = parse("(2 + 2) * 2");
         Assert.assertEquals(8, expression.evaluate(123), 0);
     }
 
     @Test
     public void leftAssociativityTest() {
-        String input = "1 - 2 + 3 - 4";
-        Expression expression = parse(input);
+        Expression expression = parse("1 - 2 + 3 - 4");
         Assert.assertEquals(-2, expression.evaluate(123), 0);
     }
 
     @Test
     public void sinTest() {
-        String input = "sin(x)";
-        Expression expression = parse(input);
+        Expression expression = parse("sin(x)");
         double x = Math.PI / 4;
         Assert.assertEquals(Math.sin(x), expression.evaluate(x), DELTA);
         Expression fdr = expression.derivative();
@@ -68,8 +63,7 @@ public class IntegrationTest {
 
     @Test
     public void cosTest() {
-        String input = "cos(x)";
-        Expression expression = parse(input);
+        Expression expression = parse("cos(x)");
         double x = Math.PI / 4;
         Assert.assertEquals(Math.cos(x), expression.evaluate(x), DELTA);
         Expression fdr = expression.derivative();
@@ -79,8 +73,7 @@ public class IntegrationTest {
 
     @Test
     public void sqrOfXTest() {
-        String input = "x^2";
-        Expression expression = parse(input);
+        Expression expression = parse("x^2");
         double x = 2;
         Assert.assertEquals(Math.pow(x, 2), expression.evaluate(x), DELTA);
         expression = expression.derivative();
@@ -93,8 +86,7 @@ public class IntegrationTest {
 
     @Test
     public void powerOf2Test() {
-        String input = "2^x";
-        Expression expression = parse(input);
+        Expression expression = parse("2^x");
         double x = 5;
         Assert.assertEquals(Math.pow(2, x), expression.evaluate(x), DELTA);
         expression = expression.derivative();
@@ -103,8 +95,7 @@ public class IntegrationTest {
 
     @Test
     public void lnSinXTest() {
-        String input = "ln(sin(x))";
-        Expression expression = parse(input);
+        Expression expression = parse("ln(sin(x))");
         double x = Math.PI / 4;
         Assert.assertEquals(Math.log(Math.sin(x)), expression.evaluate(x), DELTA);
         expression = expression.derivative();
@@ -113,13 +104,40 @@ public class IntegrationTest {
 
     @Test
     public void fractionTest() {
-        String input = "x / sin(x)";
-        Expression expression = parse(input);
+        Expression expression = parse("x / sin(x)");
         double x = Math.PI / 2;
         Assert.assertEquals(x / Math.sin(x), expression.evaluate(x), DELTA);
         expression = expression.derivative();
         Assert.assertEquals((Math.sin(x) - x * Math.cos(x)) / Math.pow(Math.sin(x), 2),
                 expression.evaluate(x), DELTA);
+    }
+
+    @Test
+    public void unaryMinusTest() {
+        Expression expression = parse("-1");
+        Assert.assertEquals(-1, expression.evaluate(12332), DELTA);
+    }
+
+    @Test
+    public void minusXTest() {
+        Expression expression = parse("-x");
+        Assert.assertEquals(-1, expression.evaluate(1), DELTA);
+        expression = expression.derivative();
+        Assert.assertEquals(-1, expression.evaluate(1234), DELTA);
+
+    }
+
+    @Test
+    public void priorityTest() {
+        Expression expression = parse("2 ^ 2 * 2 ^ 2 + 2 * 2 ^ 2");
+        Assert.assertEquals(Math.pow(2, 2) * Math.pow(2, 2) + 2 * Math.pow(2, 2), expression.evaluate(123),
+                DELTA);
+    }
+
+    @Test
+    public void powerAssociativityTest() {
+        Expression expression = parse("2 ^ 2 ^ 3");
+        Assert.assertEquals(Math.pow(2, Math.pow(2, 3)), expression.evaluate(123), DELTA);
     }
 
     private Expression parse(String input) {
@@ -129,6 +147,6 @@ public class IntegrationTest {
             Assert.fail();
         }
         AbstractSyntaxTree ast = parser.parse(lexemes);
-        return ast.getRoot().visit(visitor);
+        return ast.convert(visitor);
     }
 }

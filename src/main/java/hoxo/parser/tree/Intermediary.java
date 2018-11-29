@@ -13,10 +13,9 @@ public abstract class Intermediary extends Node {
         return false;
     }
 
+    public abstract int getPriority();
+
     public abstract List<Node> getChildren();
 
     public abstract boolean hasChildren();
-
-    @Override
-    public abstract IntermediaryType getType();
 }

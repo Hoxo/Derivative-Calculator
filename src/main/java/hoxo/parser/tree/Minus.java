@@ -1,7 +1,5 @@
 package hoxo.parser.tree;
 
-import static hoxo.parser.tree.IntermediaryType.MINUS;
-
 public class Minus extends OperationNode {
 
     public Minus() {
@@ -9,13 +7,12 @@ public class Minus extends OperationNode {
     }
 
     @Override
-    public <T> T visit(ASTVisitor<T> visitor) {
-        return visitor.visitMinus(this);
+    public int getPriority() {
+        return 0;
     }
 
     @Override
-    public IntermediaryType getType() {
-        return MINUS;
+    public <T> T visit(ASTVisitor<T> visitor) {
+        return visitor.visitMinus(this);
     }
-
 }

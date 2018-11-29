@@ -10,4 +10,5 @@ public interface ASTVisitor<T> {
     T visitVariable(Variable variable);
     T visitScope(Scope scope);
     T visitFunction(Function function);
+    T visitUnaryMinus(UnaryMinus minus);
 }

@@ -12,9 +12,6 @@ public abstract class Leaf extends Node {
     }
 
     @Override
-    public abstract LeafType getType();
-
-    @Override
     public String toString() {
         return getValue();
     }

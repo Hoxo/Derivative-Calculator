@@ -6,12 +6,12 @@ public class Divide extends OperationNode {
     }
 
     @Override
-    public <T> T visit(ASTVisitor<T> visitor) {
-        return visitor.visitDivide(this);
+    public int getPriority() {
+        return 1;
     }
 
     @Override
-    public IntermediaryType getType() {
-        return IntermediaryType.DIVIDE;
+    public <T> T visit(ASTVisitor<T> visitor) {
+        return visitor.visitDivide(this);
     }
 }

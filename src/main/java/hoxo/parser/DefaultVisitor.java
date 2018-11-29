@@ -60,6 +60,11 @@ public class DefaultVisitor implements ASTVisitor<Expression> {
     }
 
     @Override
+    public Expression visitUnaryMinus(UnaryMinus minus) {
+        return Functions.neg(minus.getChild().visit(this));
+    }
+
+    @Override
     public Expression visitScope(Scope scope) {
         return scope.getChild().visit(this);
     }

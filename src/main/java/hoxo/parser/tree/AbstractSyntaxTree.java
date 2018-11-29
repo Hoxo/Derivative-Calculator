@@ -23,6 +23,10 @@ public class AbstractSyntaxTree {
         return root;
     }
 
+    public <T> T convert(ASTVisitor<T> visitor) {
+        return root.visit(visitor);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,10 +70,14 @@ public class AbstractSyntaxTree {
         }
 
         public Intermediary addParentWithPriority(Intermediary par) {
+            if (current == null) {
+                setRoot(par);
+                return par;
+            }
             Node tmp = current;
             while (tmp.hasParent() &&
-                    tmp.getParent().getType().getPriority() >= par.getType().getPriority() &&
-                    tmp.getParent().getType().getPriority() != 2) {
+                    tmp.getParent().getPriority() >= par.getPriority() &&
+                    !(tmp.getParent() instanceof WrapperNode)) {
                 tmp = tmp.getParent();
             }
             if (tmp.hasParent()) {
