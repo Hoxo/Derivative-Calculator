@@ -12,7 +12,7 @@ public class LParenRule extends Rule {
     @Override
     public Optional<Lexeme> process(StringBuilder sb, StringIterator iterator) {
         if (iterator.current().equals('(')) {
-            if (!iterator.hasPrev() || isSeparator(iterator.peekPrev())) {
+            if (!iterator.hasPrev() || isSeparator(iterator.peekPrev()) || iterator.peekPrev().equals('(')) {
                 return Optional.of(Lexeme.lparen());
             }
         }

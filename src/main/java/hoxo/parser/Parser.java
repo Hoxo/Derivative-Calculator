@@ -96,6 +96,9 @@ public class Parser {
             case FUNCTION_START:
                 processFunction(next);
                 break;
+            case LPAREN:
+                processLParen(next);
+                break;
             case MINUS:
                 processUnaryMinus(next);
                 break;

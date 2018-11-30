@@ -146,6 +146,14 @@ public class IntegrationTest {
         Assert.assertEquals(5, expression.evaluate(1), DELTA);
     }
 
+    @Test
+    public void multiParensTest() {
+        Expression expression = parse("2 + ((2 + 2) + 2) + 2");
+        Assert.assertEquals(10, expression.evaluate(123), DELTA);
+        expression = parse("1 + (1 + (1 + 1))");
+        Assert.assertEquals(4, expression.evaluate(123), DELTA);
+    }
+
     private Expression parse(String input) {
         List<Lexeme> lexemes = lexer.parse(input);
         List<String> errors = grammarChecker.check(lexemes);
