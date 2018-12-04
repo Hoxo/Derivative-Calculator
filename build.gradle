@@ -14,3 +14,13 @@ dependencies {
     testCompile 'com.google.guava:guava:26.0-jre'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'hoxo.Main'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
