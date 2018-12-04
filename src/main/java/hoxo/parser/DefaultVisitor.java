@@ -54,8 +54,14 @@ public class DefaultVisitor implements ASTVisitor<Expression> {
     }
 
     @Override
-    public Identity visitVariable(Variable variable) {
+    public Expression visitVariable(Variable variable) {
         //TODO Replace!
+        switch (variable.getValue()) {
+            case "E":
+                return Constant.E;
+            case "PI":
+                return Constant.PI;
+        }
         return Functions.X;
     }
 

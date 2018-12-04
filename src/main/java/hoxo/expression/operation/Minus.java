@@ -26,7 +26,8 @@ public class Minus extends BinaryOperation {
         return getLeft().evaluate(x) - getRight().evaluate(x);
     }
 
-    public String toString() {
-        return "(" + getLeft() + " - " + getRight() + ")";
+    @Override
+    protected String operator() {
+        return "-";
     }
 }

@@ -33,8 +33,15 @@ public class Main {
         String a;
         while (!(a = reader.readLine()).equals("q")) {
             try {
-                Expression expression = parse(a);
-                System.out.println(expression.evaluate(1));
+                Expression expression;
+                if (a.startsWith("dfr ")) {
+                    expression = parse(a.substring(3));
+                    expression = expression.derivative();
+                    System.out.println(expression);
+                } else {
+                    expression = parse(a);
+                    System.out.println(expression.evaluate(1));
+                }
             } catch (Exception e) {
                 System.err.println(e);
             }

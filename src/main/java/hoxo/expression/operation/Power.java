@@ -75,7 +75,7 @@ public class Power extends BinaryOperation {
     }
 
     @Override
-    public String toString() {
-        return "(" + getLeft() + " ^ " + getRight() + ")";
+    protected String operator() {
+        return "^";
     }
 }

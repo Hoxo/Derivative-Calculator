@@ -32,4 +32,14 @@ public abstract class BinaryOperation implements Expression {
                 isCommutative() && left.equals(that.right) && right.equals(that.left);
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s %s %s", wrapIfIsAnOperation(getLeft()), operator(), wrapIfIsAnOperation(getRight()));
+    }
+
+    private String wrapIfIsAnOperation(Expression exp) {
+        return exp instanceof BinaryOperation ? "(" + exp + ")" : exp.toString();
+    }
+
+    protected abstract String operator();
 }

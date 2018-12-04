@@ -68,6 +68,12 @@ public class Constant implements Expression {
 
     @Override
     public String toString() {
+        if (Double.compare(value, Math.E) == 0) {
+            return "E";
+        }
+        if (Double.compare(value, Math.PI) == 0) {
+            return "PI";
+        }
         return Double.toString(value);
     }
 }

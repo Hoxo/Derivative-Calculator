@@ -3,10 +3,6 @@ package hoxo.expression;
 import static hoxo.expression.Functions.*;
 
 public class Log extends AbstractFunction {
-    public static final Log LN_X = new Log(Math.E, Functions.X);
-    public static final Log LOG2_X = new Log(2, Functions.X);
-    public static final Log LOG10_X = new Log(10, Functions.X);
-
     private final double base;
 
     private Log(double base, Expression arg) {
@@ -43,7 +39,7 @@ public class Log extends AbstractFunction {
 
     @Override
     public Expression derivative() {
-        return divide(arg.derivative(), multiply(c(Math.log(base)), arg));
+        return divide(arg.derivative(), multiply(ln(c(base)), arg));
     }
 
     public double getBase() {
@@ -57,6 +53,10 @@ public class Log extends AbstractFunction {
 
     @Override
     public String toString() {
-        return "log" + Double.toString(base) + "(" + arg + ")";
+        String name = "log" + Double.toString(base);
+        if (Double.compare(Math.E, base) == 0) {
+            name = "ln";
+        }
+        return name + "(" + arg + ")";
     }
 }
