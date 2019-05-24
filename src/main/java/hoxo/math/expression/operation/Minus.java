@@ -1,9 +1,12 @@
 package hoxo.math.expression.operation;
 
-import hoxo.math.expression.function.AbstractFunction;
-import hoxo.math.expression.function.Constant;
+import hoxo.math.expression.Constant;
 import hoxo.math.expression.Expression;
-import static hoxo.math.expression.function.Functions.*;
+import hoxo.math.expression.ExpressionVisitor;
+import hoxo.math.expression.function.AbstractFunction;
+
+import static hoxo.math.expression.function.Functions.neg;
+import static hoxo.math.expression.function.Functions.sum;
 
 public class Minus extends BinaryOperation {
     private Minus(Expression left, Expression right) {
@@ -36,6 +39,11 @@ public class Minus extends BinaryOperation {
     @Override
     public double evaluate(double x) {
         return getLeft().evaluate(x) - getRight().evaluate(x);
+    }
+
+    @Override
+    public <T> T visit(ExpressionVisitor<T> visitor) {
+        return visitor.visitMinus(this);
     }
 
     @Override

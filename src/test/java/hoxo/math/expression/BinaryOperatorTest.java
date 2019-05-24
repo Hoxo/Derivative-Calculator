@@ -1,20 +1,13 @@
 package hoxo.math.expression;
 
-import hoxo.math.expression.function.Constant;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static hoxo.math.expression.function.Functions.X;
-import static hoxo.math.expression.function.Functions.c;
-import static hoxo.math.expression.function.Functions.cos;
-import static hoxo.math.expression.function.Functions.divide;
-import static hoxo.math.expression.function.Functions.ln;
-import static hoxo.math.expression.function.Functions.multiply;
-import static hoxo.math.expression.function.Functions.pow;
-import static hoxo.math.expression.function.Functions.sin;
-import static hoxo.math.expression.function.Functions.sum;
+import static hoxo.math.expression.function.Functions.*;
 
 public class BinaryOperatorTest {
+
+    private static final Variable X = new Variable("x");
 
     @Test
     public void multiplyByZeroSimplifyTest() {

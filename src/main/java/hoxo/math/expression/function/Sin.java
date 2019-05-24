@@ -8,7 +8,7 @@ import static hoxo.math.expression.function.Functions.multiply;
 public class Sin extends AbstractFunction {
 
     public Sin(Expression arg) {
-        super(arg);
+        super("sin", arg);
     }
 
     @Override

@@ -17,14 +17,14 @@ public class IntegrationTest {
     private Lexer lexer;
     private GrammarChecker grammarChecker;
     private AstParser parser;
-    private DefaultVisitor visitor;
+    private AstToExpressionVisitor visitor;
 
     @Before
     public void init() {
         lexer = new Lexer(Rules.BASIC_RULES);
         grammarChecker = new GrammarChecker(Functions.functions().keySet());
         parser = new AstParser();
-        visitor = new DefaultVisitor(Functions.functions());
+        visitor = new AstToExpressionVisitor(Functions.functions());
     }
 
     @Test

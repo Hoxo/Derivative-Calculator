@@ -1,12 +1,13 @@
 package hoxo.math.expression.operation;
 
-import hoxo.math.expression.function.Constant;
+import hoxo.math.expression.Constant;
 import hoxo.math.expression.Expression;
+import hoxo.math.expression.ExpressionVisitor;
 
 import static hoxo.math.expression.function.Functions.*;
 
-public class Sum extends BinaryOperation {
-    private Sum(Expression left, Expression right) {
+public class Plus extends BinaryOperation {
+    private Plus(Expression left, Expression right) {
         super(left, right);
     }
 
@@ -18,6 +19,11 @@ public class Sum extends BinaryOperation {
     @Override
     public double evaluate(double x) {
         return getLeft().evaluate(x) + getRight().evaluate(x);
+    }
+
+    @Override
+    public <T> T visit(ExpressionVisitor<T> visitor) {
+        return visitor.visitPlus(this);
     }
 
     public static Expression cons(Expression left, Expression right) {
@@ -38,7 +44,7 @@ public class Sum extends BinaryOperation {
                 return left;
             }
         }
-        return new Sum(left, right);
+        return new Plus(left, right);
     }
 
     @Override

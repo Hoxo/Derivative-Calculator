@@ -1,8 +1,9 @@
 package hoxo.math.expression.operation;
 
-import hoxo.math.expression.function.AbstractFunction;
-import hoxo.math.expression.function.Constant;
+import hoxo.math.expression.Constant;
 import hoxo.math.expression.Expression;
+import hoxo.math.expression.ExpressionVisitor;
+import hoxo.math.expression.function.AbstractFunction;
 
 import static hoxo.math.expression.function.Functions.*;
 
@@ -25,6 +26,11 @@ public class Multiply extends BinaryOperation {
     @Override
     public double evaluate(double x) {
         return getLeft().evaluate(x) * getRight().evaluate(x);
+    }
+
+    @Override
+    public <T> T visit(ExpressionVisitor<T> visitor) {
+        return visitor.visitMultiply(this);
     }
 
     public static Expression cons(Expression left, Expression right) {

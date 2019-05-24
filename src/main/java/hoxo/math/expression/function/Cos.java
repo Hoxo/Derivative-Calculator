@@ -6,7 +6,7 @@ import static hoxo.math.expression.function.Functions.*;
 
 public class Cos extends AbstractFunction {
     public Cos(Expression arg) {
-        super(arg);
+        super("cos", arg);
     }
 
     @Override

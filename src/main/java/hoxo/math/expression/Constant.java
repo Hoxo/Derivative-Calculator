@@ -1,6 +1,4 @@
-package hoxo.math.expression.function;
-
-import hoxo.math.expression.Expression;
+package hoxo.math.expression;
 
 import java.util.Objects;
 
@@ -28,6 +26,11 @@ public class Constant implements Expression {
     @Override
     public Expression derivative() {
         return cons(0);
+    }
+
+    @Override
+    public <T> T visit(ExpressionVisitor<T> visitor) {
+        return visitor.visitConstant(this);
     }
 
     public static Constant cons(double value) {

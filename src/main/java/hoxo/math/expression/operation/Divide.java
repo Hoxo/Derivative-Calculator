@@ -1,7 +1,8 @@
 package hoxo.math.expression.operation;
 
-import hoxo.math.expression.function.Constant;
+import hoxo.math.expression.Constant;
 import hoxo.math.expression.Expression;
+import hoxo.math.expression.ExpressionVisitor;
 
 import static hoxo.math.expression.function.Functions.*;
 
@@ -53,6 +54,11 @@ public class Divide extends BinaryOperation {
     @Override
     public double evaluate(double x) {
         return getLeft().evaluate(x) / getRight().evaluate(x);
+    }
+
+    @Override
+    public <T> T visit(ExpressionVisitor<T> visitor) {
+        return visitor.visitDivide(this);
     }
 
     @Override

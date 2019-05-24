@@ -1,17 +1,18 @@
 package hoxo.math.parser;
 
-import hoxo.math.expression.*;
-import hoxo.math.expression.function.Constant;
+
+import hoxo.math.expression.Constant;
+import hoxo.math.expression.Expression;
 import hoxo.math.expression.function.Functions;
 import hoxo.math.parser.tree.*;
-import hoxo.math.parser.tree.Power;
 
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
-public class DefaultVisitor implements ASTVisitor<Expression> {
-    private Map<String, java.util.function.Function<Expression, Expression>> allowedFunctions;
+public class AstToExpressionVisitor implements ASTVisitor<Expression> {
+    private Map<String, UnaryOperator<Expression>> allowedFunctions;
 
-    public DefaultVisitor(Map<String, java.util.function.Function<Expression, Expression>> allowedFunctions) {
+    public AstToExpressionVisitor(Map<String, UnaryOperator<Expression>> allowedFunctions) {
         this.allowedFunctions = allowedFunctions;
     }
 
@@ -64,7 +65,7 @@ public class DefaultVisitor implements ASTVisitor<Expression> {
             case "PI":
                 return Constant.PI;
         }
-        return Functions.X;
+        return hoxo.math.expression.Variable.byName(variable.getValue());
     }
 
     @Override

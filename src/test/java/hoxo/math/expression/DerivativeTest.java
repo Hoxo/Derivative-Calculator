@@ -1,6 +1,5 @@
 package hoxo.math.expression;
 
-import hoxo.math.expression.function.Constant;
 import org.junit.Assert;
 import org.junit.Test;
 

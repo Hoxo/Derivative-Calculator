@@ -1,25 +1,34 @@
 package hoxo.math.expression.function;
 
+import hoxo.math.expression.Constant;
 import hoxo.math.expression.Expression;
+import hoxo.math.expression.ExpressionVisitor;
 
 public abstract class AbstractFunction implements Expression {
     protected final Expression arg;
+    private String name;
 
-    public AbstractFunction(Expression arg) {
+    public AbstractFunction(String name, Expression arg) {
         this.arg = arg;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Expression getArgument() {
         return arg;
     }
 
-    public abstract Expression derivative();
+    @Override
+    public <T> T visit(ExpressionVisitor<T> visitor) {
+        return visitor.visitFunction(this);
+    }
 
     public boolean isNegative() {
         return arg.getClass().equals(Negative.class);
     }
-
-    public abstract String toString();
 
     @Override
     public boolean equals(Object o) {
@@ -31,7 +40,10 @@ public abstract class AbstractFunction implements Expression {
         return arg.equals(that.arg);
     }
 
+    public abstract String toString();
+
     public static class Negative implements Expression {
+
         private final Expression arg;
 
         private Negative(Expression arg) {
@@ -46,6 +58,11 @@ public abstract class AbstractFunction implements Expression {
         @Override
         public double evaluate(double x) {
             return -arg.evaluate(x);
+        }
+
+        @Override
+        public <T> T visit(ExpressionVisitor<T> visitor) {
+            return visitor.visitNegative(this);
         }
 
         public Expression getArg() {

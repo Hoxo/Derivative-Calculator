@@ -1,5 +1,6 @@
 package hoxo.math.expression.function;
 
+import hoxo.math.expression.Constant;
 import hoxo.math.expression.Expression;
 
 import static hoxo.math.expression.function.Functions.*;
@@ -8,7 +9,7 @@ public class Log extends AbstractFunction {
     private final double base;
 
     private Log(double base, Expression arg) {
-        super(arg);
+        super("log", arg);
         this.base = base;
     }
 

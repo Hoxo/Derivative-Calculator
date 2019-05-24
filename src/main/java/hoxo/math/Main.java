@@ -15,13 +15,13 @@ public class Main {
     private Lexer lexer;
     private GrammarChecker grammarChecker;
     private AstParser parser;
-    private DefaultVisitor visitor;
+    private AstToExpressionVisitor visitor;
 
     public Main() {
         lexer = new Lexer(BASIC_RULES);
         grammarChecker = new GrammarChecker(Functions.functions().keySet());
         parser = new AstParser();
-        visitor = new DefaultVisitor(Functions.functions());
+        visitor = new AstToExpressionVisitor(Functions.functions());
     }
 
     public static void main(String[] args) throws Exception {

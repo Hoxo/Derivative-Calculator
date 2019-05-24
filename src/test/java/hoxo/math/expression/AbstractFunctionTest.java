@@ -4,9 +4,9 @@ import hoxo.math.expression.function.AbstractFunction;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static hoxo.math.expression.function.Functions.X;
-
 public class AbstractFunctionTest {
+
+    private static final Variable X = new Variable("x");
 
     @Test
     public void negativeFunctionTest() {
