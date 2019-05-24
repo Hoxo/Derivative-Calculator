@@ -17,7 +17,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'hoxo.Main'
+        attributes 'Main-Class': 'hoxo.math.Main'
     }
 
     from {

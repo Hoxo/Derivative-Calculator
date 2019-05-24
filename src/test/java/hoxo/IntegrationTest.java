@@ -1,10 +1,10 @@
 package hoxo;
 
-import hoxo.expression.Expression;
-import hoxo.expression.Functions;
-import hoxo.parser.*;
-import hoxo.parser.rule.Rules;
-import hoxo.parser.tree.AbstractSyntaxTree;
+import hoxo.math.expression.Expression;
+import hoxo.math.expression.function.Functions;
+import hoxo.math.parser.*;
+import hoxo.math.parser.rule.Rules;
+import hoxo.math.parser.tree.AbstractSyntaxTree;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,14 +16,14 @@ public class IntegrationTest {
 
     private Lexer lexer;
     private GrammarChecker grammarChecker;
-    private Parser parser;
+    private AstParser parser;
     private DefaultVisitor visitor;
 
     @Before
     public void init() {
         lexer = new Lexer(Rules.BASIC_RULES);
         grammarChecker = new GrammarChecker(Functions.functions().keySet());
-        parser = new Parser();
+        parser = new AstParser();
         visitor = new DefaultVisitor(Functions.functions());
     }
 
