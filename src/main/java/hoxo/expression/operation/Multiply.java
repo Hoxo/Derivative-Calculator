@@ -1,5 +1,6 @@
 package hoxo.expression.operation;
 
+import hoxo.expression.AbstractFunction;
 import hoxo.expression.Constant;
 import hoxo.expression.Expression;
 
@@ -37,10 +38,24 @@ public class Multiply extends BinaryOperation {
                 return left;
             }
         }
-        if (left.equals(right)) {
-            return pow(left, c(2));
+        boolean isNegative = false;
+        if (left instanceof AbstractFunction.Negative) {
+            left = ((AbstractFunction.Negative) left).getArg();
+            isNegative = !isNegative;
         }
-        return new Multiply(left, right);
+        if (right instanceof AbstractFunction.Negative) {
+            right = ((AbstractFunction.Negative) right).getArg();
+            isNegative = !isNegative;
+        }
+
+        if (left.equals(right)) {
+            return wrapIfIsNegative(pow(left, c(2)), isNegative);
+        }
+        return wrapIfIsNegative(new Multiply(left, right), isNegative);
+    }
+
+    private static Expression wrapIfIsNegative(Expression expression, boolean isNegative) {
+        return isNegative ? neg(expression) : expression;
     }
 
     @Override

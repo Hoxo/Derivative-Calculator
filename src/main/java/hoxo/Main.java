@@ -34,6 +34,20 @@ public class Main {
         while (!(a = reader.readLine()).equals("q")) {
             try {
                 Expression expression;
+                if (a.startsWith("'")) {
+                    String[] input = a.split(" ", 2);
+                    String cmd = input[0];
+                    String exp = input[1];
+                    if (!cmd.matches("'*")) {
+                        throw new Exception("Incorrect command");
+                    }
+                    Expression der = parse(exp);
+                    for (int i = 0; i < cmd.length(); i++) {
+                        der = der.derivative();
+                    }
+                    System.out.println(der);
+                    continue;
+                }
                 if (a.startsWith("dfr ")) {
                     expression = parse(a.substring(3));
                     expression = expression.derivative();

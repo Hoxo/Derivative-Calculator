@@ -17,6 +17,8 @@ public final class Functions {
         FUNCTIONS.put("log2", Functions::log2);
         FUNCTIONS.put("ln", Functions::ln);
         FUNCTIONS.put("exp", Functions::exp);
+        FUNCTIONS.put("sqr", Functions::sqr);
+        FUNCTIONS.put("sqrt", Functions::sqrt);
     }
 
     public static Map<String, Function<Expression, Expression>> functions() {
@@ -49,6 +51,10 @@ public final class Functions {
 
     public static Expression sqr(Expression arg) {
         return Power.cons(arg, c(2));
+    }
+
+    public static Expression sqrt(Expression arg) {
+        return Power.cons(arg, c(1 / 2.));
     }
 
     public static Expression exp(Expression arg) {

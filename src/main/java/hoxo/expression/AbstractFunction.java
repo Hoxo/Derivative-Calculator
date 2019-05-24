@@ -62,7 +62,7 @@ public abstract class AbstractFunction implements Expression {
 
         @Override
         public String toString() {
-            return "-" + arg;
+            return "-(" + arg + ")";
         }
     }
 
