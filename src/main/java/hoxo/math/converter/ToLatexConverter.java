@@ -1,5 +1,6 @@
 package hoxo.math.converter;
 
+import hoxo.math.expression.Constant;
 import hoxo.math.expression.Expression;
 
 import static hoxo.math.expression.function.Functions.*;
@@ -17,10 +18,10 @@ public class ToLatexConverter {
 
     public static void main(String[] args) {
         Expression expression = divide(
-                sqr(var("v")),
+                sqr(ln(Constant.E)),
                 sqrt(
                         minus(
-                                c(1),
+                                Constant.PI,
                                 divide(
                                         sqr(var("v")),
                                         sqr(var("c"))
@@ -30,5 +31,7 @@ public class ToLatexConverter {
             );
         ToLatexConverter converter = new ToLatexConverter();
         System.out.println(converter.convert(expression));
+        expression = log(Math.PI, var("x"));
+        System.out.println(converter.convert(expression.derivative()));
     }
 }

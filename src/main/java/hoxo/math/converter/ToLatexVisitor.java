@@ -1,9 +1,11 @@
 package hoxo.math.converter;
 
+import com.google.common.math.DoubleMath;
 import hoxo.math.expression.Constant;
 import hoxo.math.expression.ExpressionVisitor;
 import hoxo.math.expression.Variable;
 import hoxo.math.expression.function.AbstractFunction;
+import hoxo.math.expression.function.Log;
 import hoxo.math.expression.operation.*;
 
 class ToLatexVisitor implements ExpressionVisitor<String> {
@@ -42,7 +44,13 @@ class ToLatexVisitor implements ExpressionVisitor<String> {
 
     @Override
     public String visitConstant(Constant constant) {
-        return String.format("%.0f", constant.getValue());
+        if (DoubleMath.fuzzyEquals(Math.PI, constant.getValue(), delta())) {
+            return "\\pi";
+        }
+        if (DoubleMath.fuzzyEquals(Math.E, constant.getValue(), delta())) {
+            return "e";
+        }
+        return String.format("%s", format(constant.getValue()));
     }
 
     @Override
@@ -54,12 +62,35 @@ class ToLatexVisitor implements ExpressionVisitor<String> {
     public String visitFunction(AbstractFunction function) {
         String functionName = function.getName();
         if (functionName.equals("sqrt"))
-            return String.format("\\sqrt{%s}", function.getArgument().visit(this));
-        return String.format("%s(%s)", functionName, function.getArgument().visit(this));
+            return String.format("\\sqrt{%s}", visitArg(function));
+        if (function instanceof Log) {
+            Log log = ((Log) function);
+            if (DoubleMath.fuzzyEquals(Math.E, log.getBase(), delta())) {
+                return String.format("ln(%s)", visitArg(function));
+            }
+            return String.format("log_{%s}(%s)", format(log.getBase()), visitArg(log));
+        }
+
+        return String.format("%s(%s)", functionName, visitArg(function));
     }
 
     @Override
     public String visitNegative(AbstractFunction.Negative negative) {
         return String.format("-%s",negative.getArg().visit(this));
+    }
+
+    private String visitArg(AbstractFunction function) {
+        return function.getArgument().visit(this);
+    }
+
+    private static double delta() {
+        return 1e-15;
+    }
+
+    private static String format(double d) {
+        if (d == (long)d)
+            return String.format("%d", (long)d);
+        else
+            return String.format("%s", d);
     }
 }
