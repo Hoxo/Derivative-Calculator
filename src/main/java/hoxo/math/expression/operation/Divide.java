@@ -36,7 +36,7 @@ public class Divide extends BinaryOperation {
         if (up.equals(Constant.ZERO))
             return up;
         if (down.equals(Constant.ZERO))
-            throw new ArithmeticException("Divided by zero");
+            throw new ArithmeticException("Division by zero");
         if (down.equals(Constant.ONE))
             return up;
         if (up.equals(down))

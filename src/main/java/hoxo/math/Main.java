@@ -1,27 +1,16 @@
 package hoxo.math;
 
+import hoxo.math.converter.FromPlainTextConverter;
 import hoxo.math.expression.Expression;
-import hoxo.math.expression.function.Functions;
-import hoxo.math.parser.*;
-import hoxo.math.parser.tree.AbstractSyntaxTree;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.List;
-
-import static hoxo.math.parser.rule.Rules.BASIC_RULES;
 
 public class Main {
-    private Lexer lexer;
-    private GrammarChecker grammarChecker;
-    private AstParser parser;
-    private AstToExpressionVisitor visitor;
+    private FromPlainTextConverter converter;
 
     public Main() {
-        lexer = new Lexer(BASIC_RULES);
-        grammarChecker = new GrammarChecker(Functions.functions().keySet());
-        parser = new AstParser();
-        visitor = new AstToExpressionVisitor(Functions.functions());
+        converter = new FromPlainTextConverter();
     }
 
     public static void main(String[] args) throws Exception {
@@ -41,7 +30,7 @@ public class Main {
                     if (!cmd.matches("'*")) {
                         throw new Exception("Incorrect command");
                     }
-                    Expression der = parse(exp);
+                    Expression der = converter.convert(exp);
                     for (int i = 0; i < cmd.length(); i++) {
                         der = der.derivative();
                     }
@@ -49,28 +38,16 @@ public class Main {
                     continue;
                 }
                 if (a.startsWith("dfr ")) {
-                    expression = parse(a.substring(3));
+                    expression = converter.convert(a.substring(3));
                     expression = expression.derivative();
                     System.out.println(expression);
                 } else {
-                    expression = parse(a);
+                    expression = converter.convert(a);
                     System.out.println(expression.evaluate(1));
                 }
             } catch (Exception e) {
                 System.err.println(e);
             }
         }
-    }
-
-    private Expression parse(String input) {
-        List<Lexeme> lexemes = lexer.parse(input);
-        List<String> errors = grammarChecker.check(lexemes);
-        if (!errors.isEmpty()) {
-            for (String error : errors) {
-                System.err.println(error);
-            }
-        }
-        AbstractSyntaxTree ast = parser.parse(lexemes);
-        return ast.convert(visitor);
     }
 }

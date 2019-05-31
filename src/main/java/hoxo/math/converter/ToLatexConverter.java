@@ -1,37 +1,17 @@
 package hoxo.math.converter;
 
-import hoxo.math.expression.Constant;
 import hoxo.math.expression.Expression;
 
-import static hoxo.math.expression.function.Functions.*;
+public class ToLatexConverter implements OutputConverter {
+    private ToLatexConverter INSTANCE = new ToLatexConverter();
 
-public class ToLatexConverter {
     private ToLatexVisitor visitor;
 
-    public ToLatexConverter() {
+    private ToLatexConverter() {
         visitor = ToLatexVisitor.getInstance();
     }
 
-    String convert(Expression expression) {
+    public String convert(Expression expression) {
         return expression.visit(visitor);
-    }
-
-    public static void main(String[] args) {
-        Expression expression = divide(
-                sqr(ln(Constant.E)),
-                sqrt(
-                        minus(
-                                Constant.PI,
-                                divide(
-                                        sqr(var("v")),
-                                        sqr(var("c"))
-                                )
-                        )
-                )
-            );
-        ToLatexConverter converter = new ToLatexConverter();
-        System.out.println(converter.convert(expression));
-        expression = log(Math.PI, var("x"));
-        System.out.println(converter.convert(expression.derivative()));
     }
 }
